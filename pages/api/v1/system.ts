@@ -1,36 +1,75 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type {NextApiRequest, NextApiResponse} from "next";
 
 import {SystemInfo} from "../../../types/models";
 import {Method, StatusCode} from "../../../types/constants";
+import {Systeminformation} from "systeminformation";
+import OsData = Systeminformation.OsData;
 
-export default function handler(
+export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<SystemInfo>) {
 
-    let value: [number, SystemInfo] = [StatusCode.internalServerError, new SystemInfo("")]
+    let func: () => Promise<[number, SystemInfo]>
     switch (req.method) {
         case Method.get:
-            value = getSystemInfo()
+        default:
+            func = getSystemInfo
             break
         case Method.post:
-            value = powerOff()
+            func = powerOff
             break
     }
-    res.status(value[0]).json(value[1])
+    if (func !== null) {
+        const value = await func()
+        res.status(value[0]).json(value[1])
+        return
+    }
+    res.status(StatusCode.internalServerError).json(new SystemInfo(""))
 }
 
-function getSystemInfo(): [number, SystemInfo] {
-    return [StatusCode.success, new SystemInfo("")]
+async function getSystemInfo(): Promise<[number, SystemInfo]> {
+    const si = require("systeminformation")
+    const data: OsData = await si.osInfo()
+    return [
+        StatusCode.success,
+        new SystemInfo(
+            "",
+            data.hostname,
+            data.platform,
+            data.release,
+            data.build,
+        )
+    ]
 }
 
-function powerOff(): [number, SystemInfo] {
+async function powerOff(): Promise<[number, SystemInfo]> {
+    // Get system info to select shell and command
+    let info = (await getSystemInfo())[1]
+    let shell: string, command: string
+    const platform = info.system.toLowerCase()
+    if (platform.includes("wind")) {
+        shell = "powershell.exe"
+        command = "shutdown /s /t 50 /c \"Poweroff by server remote controller\""
+    } else if (platform.includes("linux")) {
+        shell = "bash"
+        command = "(sleep 5 && shutdown now) &"
+    } else if (platform.includes("darwin")) {
+        shell = "bash"
+        command = "(sleep 5 && shutdown now) &"
+    } else {
+        // Return error on unknown system
+        info.message = "Unknown system"
+        return [
+            StatusCode.internalServerError,
+            info
+        ]
+    }
+    // Execute command
     const execSync = require('child_process').execSync
-    const output = execSync('ls', {
+    info.message = execSync(command, {
         encoding: "utf8",
-        shell: "powershell.exe"
+        shell: shell
     })
-    let info = getSystemInfo()[1]
-    info.message = output
     return [
         StatusCode.success,
         info
