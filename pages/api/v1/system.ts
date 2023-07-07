@@ -4,27 +4,24 @@ import {SystemInfo} from "../../../types/models";
 import {Method, StatusCode} from "../../../types/constants";
 import {Systeminformation} from "systeminformation";
 import OsData = Systeminformation.OsData;
+import {getPowerOffCommand, getRebootCommand, getTerminal} from "@/platform";
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<SystemInfo>) {
 
-    let func: () => Promise<[number, SystemInfo]>
+    let value: [number, SystemInfo]
     switch (req.method) {
         case Method.get:
         default:
-            func = getSystemInfo
+            value = await getSystemInfo()
             break
         case Method.post:
-            func = powerOff
+            const {command} = req.query
+            value = await execute(command)
             break
     }
-    if (func !== null) {
-        const value = await func()
-        res.status(value[0]).json(value[1])
-        return
-    }
-    res.status(StatusCode.internalServerError).json(new SystemInfo(""))
+    res.status(value[0]).json(value[1])
 }
 
 async function getSystemInfo(): Promise<[number, SystemInfo]> {
@@ -42,33 +39,35 @@ async function getSystemInfo(): Promise<[number, SystemInfo]> {
     ]
 }
 
-async function powerOff(): Promise<[number, SystemInfo]> {
-    // Get system info to select shell and command
-    let info = (await getSystemInfo())[1]
-    let shell: string, command: string
-    const platform = info.system.toLowerCase()
-    if (platform.includes("wind")) {
-        shell = "powershell.exe"
-        command = "shutdown /s /t 50 /c \"Poweroff by server remote controller\""
-    } else if (platform.includes("linux")) {
-        shell = "bash"
-        command = "(sleep 5 && shutdown now) &"
-    } else if (platform.includes("darwin")) {
-        shell = "bash"
-        command = "(sleep 5 && shutdown now) &"
-    } else {
-        // Return error on unknown system
-        info.message = "Unknown system"
+async function execute(command: string | string[] | undefined): Promise<[number, SystemInfo]> {
+    // Get system data
+    const info = (await getSystemInfo())[1]
+    // Check command
+    if (typeof command === undefined) {
         return [
             StatusCode.internalServerError,
-            info
+            info,
+        ]
+    }
+    if (typeof command !== 'string') {
+        command = command!.join("\n")
+    }
+    // Choose command
+    if (command.includes("poweroff")) {
+        command = await getPowerOffCommand()
+    } else if (command.includes("reboot")) {
+        command = await getRebootCommand()
+    } else {
+        return [
+            StatusCode.internalServerError,
+            info,
         ]
     }
     // Execute command
     const execSync = require('child_process').execSync
     info.message = execSync(command, {
         encoding: "utf8",
-        shell: shell
+        shell: getTerminal()
     })
     return [
         StatusCode.success,
