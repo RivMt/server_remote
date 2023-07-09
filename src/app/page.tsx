@@ -46,7 +46,7 @@ export default function Home() {
             <ActionButton onClick={onPowerOffButtonPressed}>
                 <PowerSettingsNewIcon fontSize="large"/>
             </ActionButton>
-            <ActionButton onClick={postReboot}>
+            <ActionButton onClick={onRebootButtonPressed}>
                 <RestartAltOutlinedIcon fontSize="large"/>
             </ActionButton>
         </div>
