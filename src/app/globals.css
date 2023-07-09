@@ -3,25 +3,77 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --color-accent: red;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --color-accent: red;
   }
 }
 
+html {
+  width: 100%;
+  height: 100%;
+}
+
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: white;
+  width: 100%;
+  height: 100%;
+}
+
+.fill-width, .fill {
+  width: 100%
+}
+
+.fill-height, .fill {
+  height: 100%
+}
+
+.pane {
+  position: absolute;
+}
+
+.target {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 2;
+  width: 100%;
+  margin-bottom: 2em;
+  bottom: 0;
+}
+
+.content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8em;
+  justify-content: center;
+  margin: auto;
+}
+
+.message {
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid;
+  border-radius: 0.5em;
+  margin: 2em 0.5em 0.5em;
+  padding: 0.5em;
+  width: 75%;
+}
+
+.btn-action {
+  text-align: center;
+}
+
+.btn-content {
+  margin: auto;
+  color: var(--color-accent);
 }

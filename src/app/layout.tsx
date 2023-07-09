@@ -1,5 +1,6 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
+import React from "react";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Server remote</title>
+        <title>{metadata.title}</title>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-icon-57x57.png"/>
         <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-icon-60x60.png"/>
