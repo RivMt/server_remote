@@ -3,12 +3,18 @@
 @tailwind utilities;
 
 :root {
-  --color-accent: red;
+  --color-accent: #e91e63;
+  --color-accent-bright: #f8bbd0;
+  --color-foreground: black;
+  --color-background: white;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-accent: red;
+    --color-accent: #e91e63;
+    --color-accent-bright: #f8bbd0;
+    --color-foreground: white;
+    --color-background: black;
   }
 }
 
@@ -18,9 +24,15 @@ html {
 }
 
 body {
-  background: white;
+  background: var(--color-background);
+  color: var(--color-foreground);
   width: 100%;
   height: 100%;
+}
+
+h2 {
+  font-size: 1.4em;
+  font-weight: bold;
 }
 
 .fill-width, .fill {
@@ -62,8 +74,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid;
+  border: 0;
   border-radius: 0.5em;
+  background-color: var(--color-accent-bright);
+  color: var(--color-accent);
   margin: 2em 0.5em 0.5em;
   padding: 0.5em;
   width: 75%;
