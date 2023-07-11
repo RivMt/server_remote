@@ -38,7 +38,7 @@ export async function getPowerOffCommand(): Promise<string> {
             return `shutdown /s /t ${commandDelay()} /c "Poweroff by server remote controller"`
         case Platform.linux:
         case Platform.macOs:
-            return `(sleep ${commandDelay()} && poweroff) &`
+            return `(sleep ${commandDelay()} && sudo poweroff) &`
         case Platform.unknown:
         default:
             return "sh"
@@ -52,7 +52,7 @@ export async function getRebootCommand(): Promise<string> {
             return `shutdown /r /t ${commandDelay()} /c \"Reboot by server remote controller\"`
         case Platform.linux:
         case Platform.macOs:
-            return `(sleep ${commandDelay()} && reboot) &`
+            return `(sleep ${commandDelay()} && sudo reboot) &`
         case Platform.unknown:
         default:
             return "sh"
