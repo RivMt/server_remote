@@ -1,34 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Server Remote
 
-## Getting Started
+Power off or reboot your computer remotely. It designed to support Windows, macOS, and linux, but I tested on Windows and linux.
 
-First, run the development server:
+This project originally developed for my home server. So there is no authentication or security functions. To be careful using this on public server.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## How to set up
+
+1. Install `pm2`
+```shell
+npm install -g pm2@latest
 ```
+2. Run `pm2`
+```shell
+pm2 start ecosystem.config.js
+```
+3. Done!
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How to use
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Access `http(s)://[YOUR DOMAIN]:[YOUR PORT]`.
+2. You can see below page
+![Main page](/docs/page.png)
+3. First button is power off, and second is reboot. So you can power off or reboot your computer remotely using these buttons.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+> If you set up HTTPS, you can install this page as Progressive Web App.
 
-## Learn More
+## Contribution
 
-To learn more about Next.js, take a look at the following resources:
+All kind of contribution is welcome!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+You can use this repository under MIT License.
