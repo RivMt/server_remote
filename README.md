@@ -1,6 +1,6 @@
 # Server Remote
 
-Power off or reboot your computer remotely. It designed to support Windows, macOS, and linux, but I tested on Windows and linux.
+Power off or reboot your computer remotely. It is designed to support Windows, macOS, and linux, but I tested on Windows and linux.
 
 This project originally developed for my home server. So there is no authentication or security functions. To be careful using this on public server.
 
