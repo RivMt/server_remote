@@ -1,5 +1,5 @@
 FROM node:20-alpine
-RUN mkdir /opt/app
+RUN mkdir -p /opt/app
 WORKDIR /opt/app
 COPY . .
 RUN chmod +x ./init.sh
