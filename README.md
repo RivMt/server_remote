@@ -1,6 +1,6 @@
 # Server Remote
 
-Power off or reboot your computer remotely. It is designed to support Windows, macOS, and linux, but I tested on Windows and linux.
+Power off or reboot your computer remotely. It is designed to support Windows, macOS, and Linux, but I tested on Windows and Linux.
 
 This project originally developed for my home server. So there is no authentication or security functions. To be careful using this on public server.
 
@@ -18,8 +18,8 @@ pm2 start ecosystem.config.js
 
 ## How to use
 
-1. Access `http(s)://[YOUR DOMAIN]:[YOUR PORT]`.
-2. You can see below page
+1. Access `http(s)://[YOUR DOMAIN]:[YOUR PORT]`. (Default port is `3000`)
+2. You can see this page
 ![Main page](/docs/page.png)
 3. First button is power off, and second is reboot. So you can power off or reboot your computer remotely using these buttons.
 
